@@ -37,7 +37,7 @@ import TheSubnav from './TheSubnav.vue'
     data() {
         return {
             menuItems: [
-                { text: "Teams", url: '/' },
+                { text: "Teams", url: '/teams' },
                 { text: "Locations", url: '/' },
                 { text: "Life At Bobo Corp", url: '/' },
                 { text: "How we hire", url: '/' },

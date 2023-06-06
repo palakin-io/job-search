@@ -1,16 +1,24 @@
 <template>
     <div class="accordion-container">
         <div class="accordion-button" @click="open">
-            <h3>Organizations</h3>
+            <h3>{{ header }}</h3>
             <font-awesome-icon :icon="caretIcon"></font-awesome-icon>
         </div>
-        <div v-if="isOpen" class="mt-5 w-full">Child</div>
+        <div v-if="isOpen" class="mt-5 w-full">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
         name: "CollapsibleAccordion",
+        props: {
+            header: {
+                type: String,
+                required: true
+            }
+        },
         data(){
             return {
                 isOpen: false,
