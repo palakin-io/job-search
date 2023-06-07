@@ -23,7 +23,7 @@
 import { mapActions, mapState } from 'pinia';
 
 import JobListing from './JobListing.vue';
-import { useJobsStore, FETCH_JOBS } from "@/stores/jobs"
+import { useJobsStore, FETCH_JOBS, FILTERED_JOBS} from "@/stores/jobs"
 
     export default {
     name: "JobsListing",
@@ -39,7 +39,7 @@ import { useJobsStore, FETCH_JOBS } from "@/stores/jobs"
         currentPage(){
             return Number.parseInt(this.$route.query.page || this.pageString) ;
         },
-        ...mapState(useJobsStore, ["jobs"]),
+        ...mapState(useJobsStore, {FILTERED_JOBS}),
         previousPage(){
             let previousPage = this.currentPage - 1;
             let firstPage = this.pageString;
@@ -47,14 +47,14 @@ import { useJobsStore, FETCH_JOBS } from "@/stores/jobs"
         },
         nextPage(){
             let nextPage = this.currentPage + 1;
-            let maxPage = Math.ceil(this.jobs.length / 10);
+            let maxPage = Math.ceil(this.FILTERED_JOBS.length / 10);
             return nextPage <= maxPage ? nextPage : undefined;
         },
         displayedJobs(){
             let pageNumber = this.currentPage;
             let firstJobIndex = (pageNumber - 1) * 10;
             let lastJobIndex = pageNumber * 10;
-            return this.jobs.slice(firstJobIndex, lastJobIndex);
+            return this.FILTERED_JOBS.slice(firstJobIndex, lastJobIndex);
         }
     },
     async mounted() {

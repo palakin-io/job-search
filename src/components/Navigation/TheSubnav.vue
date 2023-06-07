@@ -3,13 +3,16 @@
         <div class="subnav">
             <div v-if="onJobResultsPage">
                 <font-awesome-icon :icon="['fas', 'search']" class="mr-3"></font-awesome-icon>
-                <span><span class="jobs-color">2234</span> jobs matched</span>
+                <span><span class="jobs-color">{{ FILTERED_JOBS.length }}</span> jobs matched</span>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState } from "pinia"
+
+import { useJobsStore, FILTERED_JOBS } from "../../stores/jobs";
     export default {
         name: "TheSubnav",
         data() {
@@ -18,6 +21,7 @@
             }
         },
         computed: {
+            ...mapState(useJobsStore, [FILTERED_JOBS]),
             onJobResultsPage(){
                 return this.$route.name === "JobResults" ? true : false;
             }
