@@ -8,27 +8,30 @@
                 </div>
             </div>
 
-            <job-filters-sidebar-job-type></job-filters-sidebar-job-type>
-
-            <job-filters-sidebar-orgs></job-filters-sidebar-orgs>
+            <job-filter-sidebar-group header="Job Types" :unique-values="UNIQUE_JOB_TYPES" :action="addJobType"></job-filter-sidebar-group>
+            <job-filter-sidebar-group header="Organizations" :unique-values="UNIQUE_ORGS" :action="addSelectedOrg"></job-filter-sidebar-group>
         </section>
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from "vue"
+
 import ActionButton from '../../shared/ActionButton.vue';
-import JobFiltersSidebarOrgs from './JobFiltersSidebarOrgs.vue';
-import JobFiltersSidebarJobType from './JobFiltersSidebarJobType.vue';
+import JobFilterSidebarGroup from './JobFilterSidebarGroup.vue';
 
-    export default {
-        name: "JobFiltersSidebar",
-        components: { ActionButton, JobFiltersSidebarOrgs, JobFiltersSidebarJobType },
-        data() {
-            return {
+import { useJobsStore } from "@/stores/jobs";
+import { useUserStore } from "@/stores/user";
 
-            }
-        } 
-    }
+const jobsStore = useJobsStore();
+const UNIQUE_ORGS = computed(() => jobsStore.UNIQUE_ORGS); 
+const UNIQUE_JOB_TYPES = computed(() => jobsStore.UNIQUE_JOB_TYPES); 
+
+const userStore = useUserStore();
+const addJobType = userStore.ADD_SELECTED_JOB_TYPES;
+const addSelectedOrg = userStore.ADD_SELECTED_ORG;
+
+
 </script>
 
 <style scoped>

@@ -1,5 +1,8 @@
 <template>
     <main class="listings-container">
+        <div v-if="emptyArray">
+            No hay jobs
+        </div>
         <ol>
             <job-listing 
                 v-for="(job, index) in displayedJobs" :key="index" 
@@ -19,51 +22,50 @@
     </main>
 </template>
 
-<script>
-import { mapActions, mapState } from 'pinia';
+<script setup>
+import { computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
 
+// import { usePreviousAndNextPages } from "@/composables/usePreviousAndNextPages"
 import JobListing from './JobListing.vue';
-import { useJobsStore, FETCH_JOBS, FILTERED_JOBS} from "@/stores/jobs"
+import { useJobsStore} from "@/stores/jobs"
 
-    export default {
-    name: "JobsListing",
-    components: {
-        JobListing
-    },
-    data() {
-        return {
-            pageString: '1'
-        };
-    },
-    computed: {
-        currentPage(){
-            return Number.parseInt(this.$route.query.page || this.pageString) ;
-        },
-        ...mapState(useJobsStore, {FILTERED_JOBS}),
-        previousPage(){
-            let previousPage = this.currentPage - 1;
-            let firstPage = this.pageString;
-            return previousPage >= firstPage ? previousPage : undefined;
-        },
-        nextPage(){
-            let nextPage = this.currentPage + 1;
-            let maxPage = Math.ceil(this.FILTERED_JOBS.length / 10);
-            return nextPage <= maxPage ? nextPage : undefined;
-        },
-        displayedJobs(){
-            let pageNumber = this.currentPage;
-            let firstJobIndex = (pageNumber - 1) * 10;
-            let lastJobIndex = pageNumber * 10;
-            return this.FILTERED_JOBS.slice(firstJobIndex, lastJobIndex);
-        }
-    },
-    async mounted() {
-        this.FETCH_JOBS();
-    },
-    methods: {
-        ...mapActions(useJobsStore, [FETCH_JOBS]),
-    }
-}
+
+const jobsStore = useJobsStore();
+onMounted(jobsStore.FETCH_JOBS);
+
+const route = useRoute();
+const currentPage = computed(() => Number.parseInt(route.query.page || "1"));
+
+const emptyArray = computed(() => {
+   return FILTERED_JOBS.value.length <= 0 ? true : false;
+});
+
+const FILTERED_JOBS = computed(() => jobsStore.FILTERED_JOBS)
+// let maxPage = computed(() => Math.ceil(FILTERED_JOBS.value.length / 10));
+
+// const {previousPage, nextPage} = usePreviousAndNextPages(currentPage, maxPage)
+
+const previousPage = computed(() => {
+    let previousPage = currentPage.value - 1;
+    let firstPage = 1;
+    return previousPage >= firstPage ? previousPage : undefined;
+});
+
+
+
+const nextPage = computed(() => {
+    let nextPage = currentPage.value + 1;
+    let maxPage = Math.ceil(FILTERED_JOBS.value.length / 10);
+    return nextPage <= maxPage ? nextPage : undefined;
+});
+
+const displayedJobs = computed(() => {
+    let pageNumber = currentPage.value;
+    let firstJobIndex = (pageNumber - 1) * 10;
+    let lastJobIndex = pageNumber * 10;
+    return FILTERED_JOBS.value.slice(firstJobIndex, lastJobIndex);
+});
 </script>
 
 <style scoped>

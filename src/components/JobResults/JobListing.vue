@@ -33,31 +33,24 @@
     </li>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue';
 
 
-    export default {
-        name: "JobListing",
-        props: {
-            job: {type: Object, required: true}
-        },
-        data(){
-            return {
 
-            }
-        },
-        computed: {
-            jobPageLink(){
-                return `/jobs/results/${this.job.id}`;
-            }
-        },
-        mounted() {
-            
-        }
+const props = defineProps({
+    job: {
+        type: Object,
+        required: true
     }
+})
+
+const jobPageLink = computed(() => {
+    return `/jobs/results/${props.job.id}`;
+})
 </script>
 
-<style>
+<style scoped>
     .jobs-list-container{
         @apply mb-7
     }

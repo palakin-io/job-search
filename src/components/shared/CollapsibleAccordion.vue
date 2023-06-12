@@ -4,37 +4,27 @@
             <h3>{{ header }}</h3>
             <font-awesome-icon :icon="caretIcon"></font-awesome-icon>
         </div>
-        <div v-if="isOpen" class="mt-5 w-full">
+        <div v-if="!isOpen" class="mt-5 w-full">
             <slot></slot>
         </div>
     </div>
 </template>
 
-<script>
-    export default {
-        name: "CollapsibleAccordion",
-        props: {
-            header: {
-                type: String,
-                required: true
-            }
-        },
-        data(){
-            return {
-                isOpen: false,
-            }
-        },
-        computed:{
-            caretIcon() {
-                return this.isOpen ? ["fas", "angle-up"] : ["fas", "angle-down"]
-            },
-        },
-        methods: {
-            open() {
-                this.isOpen = !this.isOpen;
-            }
-        }
+<script setup>
+import { ref, computed } from "vue";
+defineProps({
+    header: {
+        type: String,
+        required: true
     }
+});
+let isOpen = ref("false");
+
+const open = () => {
+    isOpen.value = !isOpen.value;
+};
+
+const caretIcon = computed(() => isOpen.value ? ["fas", "angle-up"] : ["fas", "angle-down"] )
 </script>
 
 <style scoped>
