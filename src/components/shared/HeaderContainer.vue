@@ -7,12 +7,6 @@
     </div>
 </template>
 
-<script>
-    export default {
-        name: "HeaderContainer",
-    }
-</script>
-
 <style scoped>
     .header-container{
         @apply w-full border-b border-solid border-brand-gray-1

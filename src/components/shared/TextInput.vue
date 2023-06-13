@@ -2,27 +2,19 @@
     <input type="text" :value="modelValue" class="w-full text-lg font-normal focus:outline-none" @input="handleInput">
 </template>
 
-<script>
-    export default {
-        name: "TextInput",
-        props: {
-            modelValue: {
-                type: String,
-                required: true
-            }
-        },
-        emits: [
-            "update:modelValue"
-        ],
-        data(){
-            return {
+<script lang="ts" setup>
 
-            };
-        },
-        methods: {
-            handleInput($event) {
-                this.$emit("update:modelValue", $event.target.value);
-            }
-        }
+const props = defineProps({
+    modelValue: {
+        type: String,
+        required: true
     }
+});
+
+const emit = defineEmits(["update:modelValue"])
+
+const handleInput = ($event: Event) => {
+    const target = $event.target as HTMLInputElement;
+    emit("update:modelValue", target.value);
+}
 </script>

@@ -6,7 +6,7 @@
     </button>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { computed, toRefs } from "vue";
 
 const props = defineProps({
@@ -18,7 +18,7 @@ const props = defineProps({
         type: String,
         required: false,
         default: "primary",
-        validator(value){
+        validator(value: string){
             return["primary", "secondary"].includes(value);
         }
     },

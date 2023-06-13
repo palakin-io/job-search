@@ -5,42 +5,31 @@
     </section>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+
 import  nextElementList  from "@/utils/nextElementList";
 
-    export default {
-        name: "TheHeadline",
-        data() {
-            return {
-                actions : ["Build", "Create", "Design", "Code"],
-                currentActionIndex: 0,
-                interval: null
-            }
-        },
-        computed: {
-            actionClasses(){
-                return {
-                    build: this.actions[this.currentActionIndex] === "Build",
-                    create: this.actions[this.currentActionIndex] === "Create",
-                    design: this.actions[this.currentActionIndex] === "Design",
-                    code: this.actions[this.currentActionIndex] === "Code"
-                }
-            }
-        },
-        created(){
-            this.changeTitle();
-        },
-        beforeUnmount(){
-            clearInterval(this.interval);
-        },
-        methods: {
-            changeTitle(){
-                this.interval = setInterval(() => {
-                    this.currentActionIndex = nextElementList(this.currentActionIndex, this.actions); 
-                }, 3000)
-            }
-        }
+const actions = ref(["Build", "Create", "Design", "Code"]);
+const currentActionIndex = ref(0)
+const interval = ref(null);
+
+const actionClasses = computed(() => {
+    return {
+        build: actions.value[currentActionIndex.value] === "Build",
+        create: actions.value[currentActionIndex.value] === "Create",
+        design: actions.value[currentActionIndex.value] === "Design",
+        code: actions.value[currentActionIndex.value] === "Code"
     }
+});
+
+const changeTitle = () => {
+    interval.value = setInterval(() => {
+    currentActionIndex.value = nextElementList(currentActionIndex.value, actions.value); 
+    }, 3000);
+};
+onMounted(changeTitle);
+onBeforeUnmount(() => clearInterval(interval.value))
 </script>
 
 <style scoped>

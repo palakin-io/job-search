@@ -22,41 +22,31 @@
     </header>
 </template>
 
-<script>
-import { mapState, mapActions } from "pinia";
+<script lang="ts" setup>
 import { useUserStore } from "@/stores/user";
+import { ref, computed } from "vue";
 
 import ActionButton from '../shared/ActionButton.vue';
 import ProfileImage from './ProfileImage.vue';
 import TheSubnav from './TheSubnav.vue'
 
 
-    export default{
-    name: "MainNav",
-    components: {ActionButton, ProfileImage, TheSubnav},
-    data() {
-        return {
-            menuItems: [
-                { text: "Teams", url: '/teams' },
-                { text: "Locations", url: '/' },
-                { text: "Life At Bobo Corp", url: '/' },
-                { text: "How we hire", url: '/' },
-                { text: "Students", url:'/' },
-                { text: "Jobs", url:'/jobs/results' }
-            ],
-        };
-    },
-    computed: {
-        ...mapState(useUserStore, ["isLoggedIn"]),
-        headerClassHeight(){
-            return{
-                "h-16": !this.isLoggedIn,
-                "h-32": this.isLoggedIn
-            }
-        },
-    },
-    methods: {
-        ...mapActions(useUserStore, ["logInUser"])
+const menuItems = ref([
+    { text: "Teams", url: '/teams' },
+    { text: "Locations", url: '/' },
+    { text: "Life At Bobo Corp", url: '/' },
+    { text: "How we hire", url: '/' },
+    { text: "Students", url:'/' },
+    { text: "Jobs", url:'/jobs/results' }
+])
+
+const userStore = useUserStore();
+const isLoggedIn = computed(() => userStore.isLoggedIn);
+const headerClassHeight = computed(() => {
+    return{
+        "h-16": !isLoggedIn.value,
+        "h-32": isLoggedIn.value
     }
-}
+})
+const logInUser = userStore.logInUser;
 </script>

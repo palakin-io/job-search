@@ -10,7 +10,7 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, computed } from "vue";
 defineProps({
     header: {
@@ -18,7 +18,7 @@ defineProps({
         required: true
     }
 });
-let isOpen = ref("false");
+let isOpen = ref(false);
 
 const open = () => {
     isOpen.value = !isOpen.value;

@@ -5,13 +5,9 @@
     >
 </template>
 
-<script>
-    export default{
-        name: "ProfileImage",
-        data() {
-            return {
-                image: "https://somoskudasai.com/wp-content/uploads/2021/02/portada_fullmetal-alchemist-4.jpg"
-            }
-        }
-    }
+<script lang="ts" setup>
+import { ref } from 'vue';
+
+const image = ref("https://somoskudasai.com/wp-content/uploads/2021/02/portada_fullmetal-alchemist-4.jpg")
+
 </script>
